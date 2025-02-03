@@ -7,12 +7,12 @@
 #SBATCH --gpus-per-node=8
 #SBATCH -N8
 
-DATESTRING=`date "+%Y-%m-%dT%H:%M:%S"`
+DATEFORMAT="+%Y-%m-%dT%H:%M:%S"
 
 CONT='nvcr.io#nvidia/hpc-benchmarks:24.03'
 
 echo "Running on hosts: $(echo $(scontrol show hostname))"
-echo "$DATESTRING"
+echo "Started at $(date $DATEFORMAT)"
 
 #FP16
 sloppy_type=2
@@ -34,6 +34,4 @@ srun -N8 --ntasks-per-node=8 --cpu-bind=none --mem-bind=none --container-image="
       --preset-gemm-kernel 0 --u-panel-chunk-nbs 8 --use-mpi-panel-broadcast 50 --sloppy-type ${sloppy_type} \
       --call-dgemv-with-multiple-threads 0 --Anq-device 0 --mpi-use-mpi 1 --prioritize-trsm 0 --prioritize-factorization 1
 
-
-echo "Done"
-echo "$DATESTRING"
+echo "Finished at $(date $DATEFORMAT)"
